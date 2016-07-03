@@ -1,0 +1,84 @@
+<openerp>
+    <data>
+        <!--Customer Receipts Report-->
+        <report
+            id = "customer_receipts"
+            model = "account.voucher"
+            string = "Customer Receipt"
+            report_type = "qweb-pdf"
+            name = "madiba.customer_receipt"
+            file = "madiba.report_customer_receipts"
+            attachment_use = "True"
+         />
+
+
+         <template id = "customer_receipt">
+            <!--<t t-call = "report.html_container"> -->
+                <!--<t t-call = "report.external_layout"> -->
+                <t t-foreach = "docs" t-as="doc">
+                    <div class = "page">
+                        <div class="row">
+                        <center style="font-size:60px;"><span t-field="doc.company_id.name"/></center>
+
+                        <div class="row">
+                            <div style="margin-left:21%"><span t-field="doc.company_id.logo"/></div><!---->
+                            <div style="margin-left:6%; margin-top:-6.2%;"><center><span t-field="doc.company_id.street"/>,<span t-field="doc.company_id.street2"/>,<span t-field="doc.company_id.city"/><br/>
+                            Phone: <span t-field="doc.company_id.phone"/><br/>
+                            Fax:<span t-field="doc.company_id.fax"/><br/>
+                            Email: <span t-field="doc.company_id.email"/><br/>
+                            Website: <span t-field="doc.company_id.website"/><br/><br/></center>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div style="margin-left:40%"><strong style="font-size:40px;">CASH RECEIPT</strong></div>
+                        </div>
+                    <div style="font:26px;">
+
+                            <br/>
+                            <br/>
+                    <b style="font-size:20px;">Cash Receipt # : <span t-field="doc.number"/></b><em style="margin-left:50%;font-size:20px;"><span t-field="doc.date"/></em><br/>
+                    <br/><br/>
+                    <b style="font-size:20px;">Cash Received From </b> <span t-field="doc.partner_id.name"/> <em style="margin-left:40%;font-size:20px;">of KES <span t-field="doc.amount"/></em><br/><br/>
+                    <b style="font-size:20px;">For </b><br/><br/>
+
+                    <table style="font-size:22px;float: right;width: 450px;height: 115px;border: 2px solid">
+                        <tr>
+                                <td style="border:2px solid;">Total Amount Due</td>
+                                <td style="border:2px solid;"></td>
+                        </tr>
+                        <tr>
+                                <td style="border:2px solid;"><span t-field="doc.amount"/></td>
+                                <td style="border:2px solid;"></td>
+                        </tr>
+                        <tr>
+                                <td style="border:2px solid;">Balance Due</td>
+                                <td style="border:2px solid;"></td>
+                        </tr>
+                    </table>
+                    <br/><br/><br/><p style="font-size:20px;">Payment Received in:</p>
+                    <table style="width:21%;font-size:22px;">
+                        <tr>
+                            <td>Cash</td>
+                            <td style="border:2px solid;">__</td>
+                        </tr>
+                        <tr>
+                            <td>Cheque</td>
+                            <td style="border:2px solid;">__</td>
+                        </tr>
+                        <tr>
+                            <td>Other</td>
+                            <td style="border:2px solid;">__</td>
+                        </tr>
+                    </table><br/>
+                            <em style="margin-top:-5px; float:right;">__________________________________</em>
+                            <em style="margin-top:-5px; float:right;font-size:17px;">Signed By</em>
+                </div>
+
+                    </div>
+                </t>
+                <!--</t> -->
+            <!--</t> -->
+        </template>
+    </data>
+</openerp>
