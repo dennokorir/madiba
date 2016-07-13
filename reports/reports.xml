@@ -12,26 +12,31 @@
          />
 
 
-         <template id = "customer_receipt">
+        <template id = "customer_receipt">
             <!--<t t-call = "report.html_container"> -->
                 <!--<t t-call = "report.external_layout"> -->
                 <t t-foreach = "docs" t-as="doc">
                     <div class = "page">
                         <div class="row">
-                        <center style="font-size:60px;"><span t-field="doc.company_id.name"/></center>
 
+                            <center style="font-size:60px;"><img t-att-src="'/madiba/static/src/img/logo.png'" /></center>
+                        </div>
+                        <!--<span t-field="doc.company_id.name"/>-->
                         <div class="row">
-                            <div style="margin-left:21%"><span t-field="doc.company_id.logo"/></div><!---->
-                            <div style="margin-left:6%; margin-top:-6.2%;"><center><span t-field="doc.company_id.street"/>,<span t-field="doc.company_id.street2"/>,<span t-field="doc.company_id.city"/><br/>
+
+                            <!--<div style="margin-left:30%"><img t-att-src="'/madiba/static/src/img/logo.png'" /></div>-->
+                            <div><center><span t-field="doc.company_id.street"/>,<span t-field="doc.company_id.street2"/>,<span t-field="doc.company_id.city"/><br/>
                             Phone: <span t-field="doc.company_id.phone"/><br/>
                             Fax:<span t-field="doc.company_id.fax"/><br/>
                             Email: <span t-field="doc.company_id.email"/><br/>
                             Website: <span t-field="doc.company_id.website"/><br/><br/></center>
                             </div>
                         </div>
-                        </div>
+
+
                         <div class="row">
-                        <div style="margin-left:40%"><strong style="font-size:40px;">CASH RECEIPT</strong></div>
+                        <div style="margin-left:40%"><strong style="font-size:40px;">CASH RECEIPT</strong>
+                    </div>
                         </div>
                     <div style="font:26px;">
 
@@ -39,38 +44,26 @@
                             <br/>
                     <b style="font-size:20px;">Cash Receipt # : <span t-field="doc.number"/></b><em style="margin-left:50%;font-size:20px;"><span t-field="doc.date"/></em><br/>
                     <br/><br/>
-                    <b style="font-size:20px;">Cash Received From </b> <span t-field="doc.partner_id.name"/> <em style="margin-left:40%;font-size:20px;">of KES <span t-field="doc.amount"/></em><br/><br/>
-                    <b style="font-size:20px;">For </b><br/><br/>
+                    <b style="font-size:20px;">Cash Received From </b> <em style="font-size:20px;border-bottom:1px solid;font-size:20px;"><span t-field="doc.partner_id.name"/> </em><span style="margin-left:38%;">of KES</span> <em style="font-size:20px;border-bottom:1px solid"><span t-field="doc.amount"/></em><br/><br/>
+                    <b style="font-size:20px;">For </b> <em style="font-size:20px;"><u><span t-field="doc.plots"/></u></em><br/><br/>
 
                     <table style="font-size:22px;float: right;width: 450px;height: 115px;border: 2px solid">
                         <tr>
                                 <td style="border:2px solid;">Total Amount Due</td>
-                                <td style="border:2px solid;"></td>
+                                <td style="border:2px solid;"><span t-field="doc.balance"/></td>
                         </tr>
                         <tr>
+                                <td style="border:2px solid;">Amount Received</td>
                                 <td style="border:2px solid;"><span t-field="doc.amount"/></td>
-                                <td style="border:2px solid;"></td>
                         </tr>
                         <tr>
-                                <td style="border:2px solid;">Balance Due</td>
-                                <td style="border:2px solid;"></td>
+                                <td style="border:2px solid;">Balance</td>
+                                <td style="border:2px solid;"><span t-field="doc.balance_after"/></td>
                         </tr>
                     </table>
-                    <br/><br/><br/><p style="font-size:20px;">Payment Received in:</p>
-                    <table style="width:21%;font-size:22px;">
-                        <tr>
-                            <td>Cash</td>
-                            <td style="border:2px solid;">__</td>
-                        </tr>
-                        <tr>
-                            <td>Cheque</td>
-                            <td style="border:2px solid;">__</td>
-                        </tr>
-                        <tr>
-                            <td>Other</td>
-                            <td style="border:2px solid;">__</td>
-                        </tr>
-                    </table><br/>
+                    <br/><br/><br/><p style="font-size:20px;">Payment Received in:<span t-field="doc.journal_id"/></p>
+
+                    <br/>
                             <em style="margin-top:-5px; float:right;">__________________________________</em>
                             <em style="margin-top:-5px; float:right;font-size:17px;">Signed By</em>
                 </div>
@@ -79,6 +72,49 @@
                 </t>
                 <!--</t> -->
             <!--</t> -->
+        </template>
+
+
+
+        <report
+            id = "customer_dues_report"
+            model = "account.invoice"
+            string = "Customer Dues"
+            report_type = "qweb-pdf"
+            name = "madiba.customer_dues"
+            file = "madiba.report_customer_dues"
+            attachment_use = "True"
+         />
+
+
+        <template id = "customer_dues">
+            <t t-call = "report.html_container">
+                <t t-call = "report.external_layout">
+                    <!--<t t-foreach = "docs" t-as="doc">-->
+                        <div class = "page">
+                            <h2>Customer Dues Report</h2>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Invoice Number</th>
+                                        <th>Plots</th>
+                                        <th>Due As At</th>
+                                        <th>Amount Due</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="docs" t-as="l">
+                                        <td><span t-field="l.number"/></td>
+                                        <td><span t-field="l.items"/></td>
+                                        <td><span t-esc="time.strftime('%d-%m-%Y')"/></td>
+                                        <td><span t-field="l.amount_due"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    <!--</t>-->
+                </t>
+            </t>
         </template>
     </data>
 </openerp>

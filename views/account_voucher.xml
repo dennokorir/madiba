@@ -8,6 +8,11 @@
             <xpath expr = "//button[@name='proforma_voucher']" position = "after">
                 <button name = 'print_receipt' type = 'object' string = "Print Receipt"/>
             </xpath>
+
+
+            <xpath expr = "//field[@name='amount']" position = "after">
+                <field name = 'plots'/>
+            </xpath>
           </field>
         </record>
 

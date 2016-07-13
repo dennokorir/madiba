@@ -1,0 +1,35 @@
+<openerp>
+    <data>
+        <record model = 'ir.ui.view' id = 'customer_dues_wizard'>
+            <field name = 'name'>Customer Dues</field>
+            <field name = 'model'>customer.dues.wizard</field>
+            <field name = 'arch' type = 'xml'>
+                <form>
+                    <group>
+                        <group>
+                            <field name = 'as_at'/>
+                        </group>
+                        <group>
+
+                        </group>
+                    </group>
+                    <footer>
+                        <button name = "print_customer_dues" type = "object" string = "Print" class = "oe_highlight"/>
+                        or
+                        <button special = "cancel" string = "Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window id = "launch_customer_dues_wizard"
+            name = "Customer Dues"
+            src_model = "account.invoice"
+            res_model = "customer.dues.wizard"
+            view_mode = "form"
+            target = "new"
+            key2 = "client_action_multi" />
+
+        <menuitem name = 'Customer Dues' id = 'customer_dues_report' parent = 'account_followup.menu_finance_followup' action = "launch_customer_dues_wizard" sequence = "100"/>
+    </data>
+</openerp>
